@@ -8,7 +8,7 @@ public static void main(String[] args)
     {
         if(args.length < 2){
             System.out.println("Not enough arguments passed in. Exiting.");
-            return;
+            System.exit(1);
         }
         else{
             System.out.println("Using input file " + args[0] + " and saving to " + args[1] + ".");
@@ -19,6 +19,7 @@ public static void main(String[] args)
         }
         catch (Exception e){
             System.out.println(e.getMessage());
+            System.exit(1);
         }
     }
 }
