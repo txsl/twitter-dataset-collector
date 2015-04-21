@@ -4,18 +4,21 @@ import eu.socialsensor.twcollect.TweetCorpusDownloader;
 
 
 public class run {
-public static void main(String args[])
+public static void main(String[] args)
     {
-        System.out.println("Hello World");
+        if(args.length < 2){
+            System.out.println("Not enough arguments passed in. Exiting.");
+            return;
+        }
+        else{
+            System.out.println("Using input file " + args[0] + " and saving to " + args[1] + ".");
+        }
+        
         try{
-            TweetCorpusDownloader.downloadIdsMultiThread("tweet_ids_only.txt_aa", "out.txt", true, 10);
-        //     // downloadIdsMultiThread("tweet_ids_only.txt_aa", "out.txt", true, 10);
+            TweetCorpusDownloader.downloadIdsMultiThread(args[0], args[1], true, 10);
         }
         catch (Exception e){
-            // return;
             System.out.println(e.getMessage());
         }
-        // adIdsMultiThread("tweet_ids_only.txt_aa", "out.txt", true, 10);
-        System.out.println("Hello World2");
     }
 }

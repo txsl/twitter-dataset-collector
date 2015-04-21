@@ -2,5 +2,7 @@
 
 mvn clean compile assembly:single
 
-javac -classpath "target/twitter-dataset-collector-0.1-SNAPSHOT-jar-with-dependencies.jar" run.java
+mv target/twitter-dataset-collector-0.1-SNAPSHOT-jar-with-dependencies.jar target/dependencies.jar
+
+javac -classpath "target/dependencies.jar" run.java
 
