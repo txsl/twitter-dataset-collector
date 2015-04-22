@@ -1,5 +1,6 @@
 from mongoengine import Document, StringField, ListField, BooleanField, IntField, DateTimeField, FileField
 
+
 class ScrapeSet(Document):
     s_id = StringField(required=True)
     status = StringField(required=True)

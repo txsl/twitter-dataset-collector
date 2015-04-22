@@ -3,7 +3,7 @@ import os, errno, csv, subprocess, datetime
 
 from mongoengine import connect
 
-from config import data_dir
+from config import data_dir, connect
 from documents import ScrapeSet, ScrapedTweets, OFTweet
 
 try:
@@ -14,7 +14,7 @@ except OSError as exc: # Python >2.5
         print 'Path already exists (%s)' % data_dir
     else: raise
 
-connect('twitter')
+
 
 while True:
     sets = ScrapeSet.objects(status="not_started")

@@ -1,11 +1,7 @@
 import glob
 
-from mongoengine import connect
-
 from documents import ScrapeSet
-
-connect('twitter')
-
+from config import connect
 
 files = glob.glob('/Users/txsl/Desktop/scratch/files/*.txt_*')
 

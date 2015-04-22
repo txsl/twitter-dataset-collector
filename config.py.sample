@@ -1,1 +1,3 @@
 data_dir = '/path/to/dir'
+
+connect('glasgow', host='', username='', password='')
