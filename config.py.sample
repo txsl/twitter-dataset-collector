@@ -1,3 +1,5 @@
+from mongoengine import connect
+
 data_dir = '/path/to/dir'
 
 connect('glasgow', host='', username='', password='')
