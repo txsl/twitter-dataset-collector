@@ -24,11 +24,13 @@ while True:
         print 'No more scrape sets to start working on(!)'
         exit()
 
-    this_set['status'] = "in_progress"
-    this_set['hostname'] = gethostname()
-    db.scrape_set.save(this_set)
+    # this_set['status'] = "in_progress"
+    # this_set['hostname'] = gethostname()
+    # db.scrape_set.save(this_set)
+    db.scrape_set.update({'_id': this_set['_id']}, {'$set': {'status': 'in_progress', 'hostname': gethostname()}})
 
     print 'Working on set: ' + this_set['s_id']
+    exit()
 
     f = open('%s/input_%s.txt' % (data_dir, this_set.s_id) , 'w')
     for i in this_set.tweet_ids:
@@ -75,8 +77,9 @@ while True:
 
     print 'Outputs saved'
 
-    this_set['status'] = 'finished'
-    db.scrape_set.save(this_set)
+    # this_set['status'] = 'finished'
+    # db.scrape_set.save(this_set)
+    db.scrape_set.update({'_id': this_set['_id']}, {'$set': {'status': 'finished'}})
 
     os.remove('%s/input_%s.txt' % (data_dir, this_set.s_id))
     os.remove('%s/output_%s.txt' % (data_dir, this_set.s_id))
