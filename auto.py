@@ -28,30 +28,33 @@ while True:
 
     print 'Working on set: ' + this_set['s_id']
 
-    f = open('%s/input_%s.txt' % (data_dir, this_set.s_id) , 'w')
+    input_filename = '%s/input_%s.txt' % (data_dir, this_set['s_id'])
+    output_filename = '%s/output_%s.txt' % (data_dir, this_set['s_id'])
+
+    f = open(input_filename , 'w')
     for i in this_set.tweet_ids:
-        print i
+        # print i
         f.write(i + '\n')
     f.close()
 
     print "Input file written"
 
     try:
-        p = subprocess.check_output(['./run.sh', '%s/input_%s.txt' % (data_dir, this_set.s_id), '%s/output_%s.txt' % (data_dir, this_set.s_id)])
+        p = subprocess.check_output(['./run.sh', input_filename, output_filename])
     except subprocess.CalledProcessError as shexec:
         print "Error!", shexec.output
         exit()
 
     print "Data retrieved"
 
-    with open('%s/output_%s.txt' % (data_dir, this_set.s_id), 'r') as tsvin:
+    with open(output_filename, 'r') as tsvin:
         tsvin = csv.reader(tsvin, delimiter='\t')
         for row in tsvin:
 
             if row[0] == '200':
                 new = ScrapedTweets(id_str=row[6], user_screen_name=row[7], text=row[8],
                                          retweet_count=row[10], favorite_count=row[11], 
-                                         shard_id=this_set.s_id)
+                                         shard_id=this_set['s_id'])
                 
                 if row[12] == 'null':
                     new.other_scraped_field = None
@@ -67,16 +70,16 @@ while True:
 
                 new.save()
 
-    saved_file = OFTweet(shard_id=this_set.s_id)
-    saved_file.output_file.put(open('%s/input_%s.txt' % (data_dir, this_set.s_id)), content_type="text/plain")
+    saved_file = OFTweet(shard_id=this_set['s_id'])
+    saved_file.output_file.put(open(output_filename), content_type="text/plain")
     saved_file.save()
 
     print 'Outputs saved'
 
     db.scrape_set.update({'_id': this_set['_id']}, {'$set': {'status': 'finished'}})
 
-    os.remove('%s/input_%s.txt' % (data_dir, this_set.s_id))
-    os.remove('%s/output_%s.txt' % (data_dir, this_set.s_id))
+    os.remove(input_filename)
+    os.remove(output_filename)
 
 
 
