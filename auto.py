@@ -1,9 +1,8 @@
 from socket import gethostname
 import os, errno, csv, subprocess, datetime
+from pymongo import MongoClient
 
-from mongoengine import connect
-
-from config import data_dir, connect
+from config import data_dir, uri
 from documents import ScrapeSet, ScrapedTweets, OFTweet
 
 try:
@@ -14,21 +13,22 @@ except OSError as exc: # Python >2.5
         print 'Path already exists (%s)' % data_dir
     else: raise
 
+client = MongoClient(uri)
+db = client.glasgow
 
 
 while True:
-    sets = ScrapeSet.objects(status="not_started")
-    
-    if len(sets) == 0:
+    this_set = db.scrape_set.find_one({"status": "not_started"}) # ScrapeSet.objects(status="not_started")
+
+    if this_set == None:
         print 'No more scrape sets to start working on(!)'
         exit()
 
-    this_set = sets[0]
-    this_set.status = "in_progress"
-    this_set.hostname = gethostname()
-    this_set.save()
+    this_set['status'] = "in_progress"
+    this_set['hostname'] = gethostname()
+    db.scrape_set.save(this_set)
 
-    print 'Working on set: ' + this_set.s_id
+    print 'Working on set: ' + this_set['s_id']
 
     f = open('%s/input_%s.txt' % (data_dir, this_set.s_id) , 'w')
     for i in this_set.tweet_ids:
@@ -75,8 +75,8 @@ while True:
 
     print 'Outputs saved'
 
-    this_set.status = 'finished'
-    this_set.save()
+    this_set['status'] = 'finished'
+    db.scrape_set.save(this_set)
 
     os.remove('%s/input_%s.txt' % (data_dir, this_set.s_id))
     os.remove('%s/output_%s.txt' % (data_dir, this_set.s_id))
