@@ -51,7 +51,7 @@ while True:
         tsvin = csv.reader(tsvin, delimiter='\t')
         for row in tsvin:
 
-            if row[0] == '200':
+            if row[5] in ['R', 'Re', 'O']:
                 new = ScrapedTweets(id_str=row[6], user_screen_name=row[7], text=row[8],
                                          retweet_count=row[10], favorite_count=row[11], 
                                          shard_id=this_set['s_id'])
