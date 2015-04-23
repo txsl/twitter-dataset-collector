@@ -32,7 +32,7 @@ while True:
     output_filename = '%s/output_%s.txt' % (data_dir, this_set['s_id'])
 
     f = open(input_filename , 'w')
-    for i in this_set.tweet_ids:
+    for i in this_set['tweet_ids']:
         # print i
         f.write(i + '\n')
     f.close()
