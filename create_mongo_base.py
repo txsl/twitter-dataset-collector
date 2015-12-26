@@ -22,7 +22,7 @@ def process_data(chunk):
 
 def chunks(l, n):
     return [l[i:i+n] for i in range(0, len(l), n)] 
- 
+
 def do_job(job_id, data_slice):
     for item in data_slice:
         print "job", job_id, item
@@ -44,4 +44,4 @@ def dispatch_jobs(data, job_number):
 if __name__ == "__main__":
     data = glob.glob(input_search_dir)
     print data
-    dispatch_jobs(data, 6)
+    dispatch_jobs(data, 1)
