@@ -1,7 +1,11 @@
-twitter-dataset-collector
-=========================
+twitter-dataset-collector (txsl fork)
+=====================================
 
 <p>The project facilitates the distribution of Twitter datasets by downloading sets of tweets (if still available) using their ids as input and by providing simple wrapping around the popular Twitter4j client. It is very similar to the popular <a href="https://github.com/myleott/twitter-corpus-tools">twitter-corpus-tools</a>. However, it is significantly more simple to use since it has very few dependencies (<a href="http://jsoup.org/">jsoup</a> and <a href="http://twitter4j.org/en/index.html">twitter4j</a>) and simple text-based input/output file formats. We recommend to use the collector with moderation (i.e. do not use too many threads and do not leave it running for too long) and only for research purpuses (i.e. to distribute Twitter datasets and reproduce results).</p>
+
+## Fork details
+
+This fork adds support for distributed dataset collection (for example, using a cluster of machines). Data is loaded from different files into MongoDB via a Python script. Then on each machine which is collecting data, another Python script collects a set of data from MongoDB (Mongo must configured to accept connections from any machine running this script to allow connections), collects the data using the existing Java code, and then uploads the results back into MongoDB.
 
 <h2><u>Instructions</u></h2>
 
